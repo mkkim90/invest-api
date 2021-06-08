@@ -1,5 +1,5 @@
 package com.kakaopay.invest.domain;
 
-public enum OrderStatus {
-    COOKING, MEAL, COMPLETION
+public enum ProductStatus {
+    INVESTING, COMPLETION
 }

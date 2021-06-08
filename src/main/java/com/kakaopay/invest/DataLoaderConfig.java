@@ -1,39 +1,38 @@
-package nextstep.subway;
+package com.kakaopay.invest;
 
-import com.google.common.collect.Lists;
-import nextstep.subway.line.domain.Line;
-import nextstep.subway.line.domain.LineRepository;
-import nextstep.subway.member.domain.Member;
-import nextstep.subway.member.domain.MemberRepository;
-import nextstep.subway.station.domain.Station;
+import com.kakaopay.invest.domain.Invest;
+import com.kakaopay.invest.domain.Product;
+import com.kakaopay.invest.repository.InvestRepository;
+import com.kakaopay.invest.repository.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+
 @Component
 @Profile("!test")
 public class DataLoaderConfig implements CommandLineRunner {
-    private LineRepository lineRepository;
-    private MemberRepository memberRepository;
+    private ProductRepository productRepository;
+    private InvestRepository investRepository;
 
-    public DataLoaderConfig(LineRepository lineRepository, MemberRepository memberRepository) {
-        this.lineRepository = lineRepository;
-        this.memberRepository = memberRepository;
+    public DataLoaderConfig(ProductRepository productRepository, InvestRepository investRepository) {
+        this.productRepository = productRepository;
+        this.investRepository = investRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        Station 강남역 = new Station("강남역");
-        Station 교대역 = new Station("교대역");
-        Station 양재역 = new Station("양재역");
-        Station 남부터미널역 = new Station("남부터미널역");
+        Product 개인신용포트폴리오 = new Product("개인신용 포트폴리오", BigDecimal.valueOf(1000000), LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
+        Product 부동산포트폴리오 = new Product("부동산 포트폴리오", BigDecimal.valueOf(50000000), LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
+        productRepository.saveAll(Arrays.asList(개인신용포트폴리오, 부동산포트폴리오));
+        Invest 개인신용포트폴리오투자 = new Invest(BigDecimal.valueOf(1000), 1234L, 개인신용포트폴리오);
+        Invest 부동산포트폴리오투자 = new Invest(BigDecimal.valueOf(4000), 1234L, 부동산포트폴리오);
+        Invest 개인신용포트폴리오투자2 = new Invest(BigDecimal.valueOf(1000), 1234L, 개인신용포트폴리오);
+        Invest 부동산포트폴리오투자2 = new Invest(BigDecimal.valueOf(4000), 1234L, 부동산포트폴리오);
+        investRepository.saveAll(Arrays.asList(개인신용포트폴리오투자, 부동산포트폴리오투자, 개인신용포트폴리오투자2, 부동산포트폴리오투자2));
 
-        Line 신분당선 = new Line("신분당선", "red lighten-1", 강남역, 양재역, 10);
-        Line 이호선 = new Line("2호선", "green lighten-1", 교대역, 강남역, 10);
-        Line 삼호선 = new Line("3호선", "orange darken-1", 교대역, 양재역, 10);
-
-        lineRepository.saveAll(Lists.newArrayList(신분당선, 이호선, 삼호선));
-
-        memberRepository.save(new Member("mkzzang0928@gmail.com", "11", 10));
     }
 }
