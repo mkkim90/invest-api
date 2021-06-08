@@ -9,6 +9,7 @@ import com.kakaopay.invest.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,8 @@ public class InvestService {
 
     @Transactional(readOnly = true)
     public List<InvestResponse> list(Long userId) {
-        List<Invest> invests = investRepository.findAll();
+        List<Invest> invests = investRepository.findAllByUserId(userId);
+        if (invests.size() == 0) throw new IllegalArgumentException("조회되는 투자상품이 없습니다.");
         return invests.stream()
                 .map(InvestResponse::of)
                 .collect(Collectors.toList());

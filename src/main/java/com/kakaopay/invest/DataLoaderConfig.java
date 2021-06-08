@@ -30,8 +30,8 @@ public class DataLoaderConfig implements CommandLineRunner {
         productRepository.saveAll(Arrays.asList(개인신용포트폴리오, 부동산포트폴리오));
         Invest 개인신용포트폴리오투자 = new Invest(BigDecimal.valueOf(1000), 1234L, 개인신용포트폴리오);
         Invest 부동산포트폴리오투자 = new Invest(BigDecimal.valueOf(4000), 1234L, 부동산포트폴리오);
-        Invest 개인신용포트폴리오투자2 = new Invest(BigDecimal.valueOf(1000), 1234L, 개인신용포트폴리오);
-        Invest 부동산포트폴리오투자2 = new Invest(BigDecimal.valueOf(4000), 1234L, 부동산포트폴리오);
+        Invest 개인신용포트폴리오투자2 = new Invest(BigDecimal.valueOf(1000), 1235L, 개인신용포트폴리오);
+        Invest 부동산포트폴리오투자2 = new Invest(BigDecimal.valueOf(4000), 1235L, 부동산포트폴리오);
         investRepository.saveAll(Arrays.asList(개인신용포트폴리오투자, 부동산포트폴리오투자, 개인신용포트폴리오투자2, 부동산포트폴리오투자2));
 
     }

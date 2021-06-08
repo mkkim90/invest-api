@@ -1,9 +1,7 @@
 package com.kakaopay.invest.api;
 
 import com.kakaopay.invest.dto.InvestResponse;
-import com.kakaopay.invest.dto.ProductResponse;
 import com.kakaopay.invest.service.InvestService;
-import com.kakaopay.invest.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;

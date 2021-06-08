@@ -35,4 +35,24 @@ public class InvestResponse {
                invest.getCreatedDate()
         );
     }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public String getProductTitle() {
+        return productTitle;
+    }
+
+    public BigDecimal getTotalInvestingAmount() {
+        return totalInvestingAmount;
+    }
+
+    public BigDecimal getMyInvestingAmount() {
+        return myInvestingAmount;
+    }
+
+    public LocalDateTime getInvestDate() {
+        return investDate;
+    }
 }
