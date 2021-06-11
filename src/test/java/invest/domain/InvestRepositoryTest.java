@@ -1,7 +1,7 @@
-package com.kakaopay.invest.domain;
+package invest.domain;
 
-import com.kakaopay.invest.repository.InvestRepository;
-import com.kakaopay.invest.repository.ProductRepository;
+import invest.repository.InvestRepository;
+import invest.repository.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

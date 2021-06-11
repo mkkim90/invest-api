@@ -1,4 +1,4 @@
-package com.kakaopay.invest.domain;
+package invest.domain;
 
 import org.hibernate.annotations.BatchSize;
 

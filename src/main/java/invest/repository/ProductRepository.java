@@ -1,6 +1,6 @@
-package com.kakaopay.invest.repository;
+package invest.repository;
 
-import com.kakaopay.invest.domain.Product;
+import invest.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

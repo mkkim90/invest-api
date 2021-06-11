@@ -1,9 +1,9 @@
-package com.kakaopay.invest;
+package invest;
 
-import com.kakaopay.invest.domain.Invest;
-import com.kakaopay.invest.domain.Product;
-import com.kakaopay.invest.repository.InvestRepository;
-import com.kakaopay.invest.repository.ProductRepository;
+import invest.domain.Invest;
+import invest.domain.Product;
+import invest.repository.InvestRepository;
+import invest.repository.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

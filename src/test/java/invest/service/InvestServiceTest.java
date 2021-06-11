@@ -1,8 +1,8 @@
-package com.kakaopay.invest.service;
+package invest.service;
 
-import com.kakaopay.invest.domain.Product;
-import com.kakaopay.invest.dto.InvestRequest;
-import com.kakaopay.invest.repository.ProductRepository;
+import invest.domain.Product;
+import invest.dto.InvestRequest;
+import invest.repository.ProductRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

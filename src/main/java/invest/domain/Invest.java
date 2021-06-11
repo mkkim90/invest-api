@@ -1,4 +1,4 @@
-package com.kakaopay.invest.domain;
+package invest.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

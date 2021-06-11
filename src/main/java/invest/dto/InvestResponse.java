@@ -1,6 +1,6 @@
-package com.kakaopay.invest.dto;
+package invest.dto;
 
-import com.kakaopay.invest.domain.Invest;
+import invest.domain.Invest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

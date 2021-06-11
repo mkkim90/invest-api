@@ -1,7 +1,7 @@
-package com.kakaopay.invest.api;
+package invest.api;
 
-import com.kakaopay.invest.dto.ProductResponse;
-import com.kakaopay.invest.service.ProductService;
+import invest.dto.ProductResponse;
+import invest.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

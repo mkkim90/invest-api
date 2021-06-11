@@ -1,6 +1,6 @@
-package com.kakaopay.invest.domain;
+package invest.domain;
 
-import com.kakaopay.invest.repository.ProductRepository;
+import invest.repository.ProductRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ public class ProductRepositoryTest {
     @Test
     void validateStartedAtAndFinishedAt() {
         Assertions.assertThatThrownBy(() -> {
-            new Product("투자상품", BigDecimal.valueOf(100), LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
+            new Product("투자상품", BigDecimal.valueOf(100), LocalDateTime.now().plusMonths(1), LocalDateTime.now());
         }).isInstanceOf(IllegalArgumentException.class);
     }
 

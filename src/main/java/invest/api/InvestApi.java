@@ -1,12 +1,11 @@
-package com.kakaopay.invest.api;
+package invest.api;
 
-import com.kakaopay.invest.dto.InvestRequest;
-import com.kakaopay.invest.dto.InvestResponse;
-import com.kakaopay.invest.service.InvestService;
+import invest.dto.InvestRequest;
+import invest.dto.InvestResponse;
+import invest.service.InvestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController

@@ -1,4 +1,4 @@
-package com.kakaopay.invest.dto;
+package invest.dto;
 
 import java.math.BigDecimal;
 

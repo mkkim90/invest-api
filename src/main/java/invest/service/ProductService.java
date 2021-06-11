@@ -1,8 +1,8 @@
-package com.kakaopay.invest.service;
+package invest.service;
 
-import com.kakaopay.invest.domain.Product;
-import com.kakaopay.invest.dto.ProductResponse;
-import com.kakaopay.invest.repository.ProductRepository;
+import invest.domain.Product;
+import invest.dto.ProductResponse;
+import invest.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

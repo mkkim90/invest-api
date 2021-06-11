@@ -1,4 +1,4 @@
-package com.kakaopay.invest.domain;
+package invest.domain;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
