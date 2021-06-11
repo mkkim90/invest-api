@@ -26,13 +26,13 @@ public class InvestApi {
                 .body(investResponse);
     }
 
-    @GetMapping("/api/invest/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<InvestResponse> showInvest(@PathVariable Long id) {
         return ResponseEntity.ok()
                 .body(investService.findById(id));
     }
 
-    @GetMapping("/api/invest")
+    @GetMapping
     public ResponseEntity<List<InvestResponse>> listByUserId(@RequestHeader(name = "X-USER-ID") final Long userId) {
         return ResponseEntity.ok()
                 .body(investService.list(userId));
