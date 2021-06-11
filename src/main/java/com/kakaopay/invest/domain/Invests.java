@@ -1,12 +1,10 @@
 package com.kakaopay.invest.domain;
 
 import org.hibernate.annotations.BatchSize;
-import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Embeddable
@@ -16,17 +14,8 @@ public class Invests {
     @JoinColumn(name = "product_id")
     private final List<Invest> invests = new ArrayList<>();
 
-    public void add(Long productId, List<Invest> Invests) {
-        if (CollectionUtils.isEmpty(invests)) {
-            throw new IllegalArgumentException();
-        }
-        for (final Invest invest : invests) {
-            this.invests.add(invest);
-        }
-    }
-
-    public List<Invest> getInvests() {
-        return Collections.unmodifiableList(invests);
+    public void add(Invest invest) {
+        this.invests.add(invest);
     }
 
     public BigDecimal getCurrentInvestingAmount() {
@@ -38,5 +27,9 @@ public class Invests {
 
     public long getNumberInvestors() {
         return invests.size();
+    }
+
+    public boolean currentInvestingAmountEquals(BigDecimal totalInvestingAmount) {
+        return getCurrentInvestingAmount().equals(totalInvestingAmount);
     }
 }

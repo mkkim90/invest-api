@@ -2,9 +2,7 @@ package com.kakaopay.invest.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.nio.file.FileStore;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class Product extends BaseTimeEntity{
@@ -28,7 +26,6 @@ public class Product extends BaseTimeEntity{
     @Embedded
     private final Invests invests = new Invests();
 
-
     protected Product() {
     }
 
@@ -50,6 +47,59 @@ public class Product extends BaseTimeEntity{
     private void validateLessThanZero(BigDecimal totalInvestingAmount) {
         if (BigDecimal.ZERO.compareTo(totalInvestingAmount) > 0) {
             throw new IllegalArgumentException("가격이 0보다 적을 수 없습니다.");
+        }
+    }
+
+    public void invest(Invest invest) {
+        validateSoldOutProduct();
+        validateInvestingDate();
+        validateOverAmount(invest.getAmount());
+        invests.add(invest);
+    }
+
+    private void validateSoldOutProduct() {
+        if (isCompleted()) {
+            throw new IllegalArgumentException("모집이 완료된 상품입니다.");
+        }
+    }
+
+    public boolean isCompleted() {
+        return this.productStatus == ProductStatus.COMPLETION;
+    }
+
+    private void validateInvestingDate() {
+        if (isNotInvestingDate()) {
+            throw new IllegalArgumentException("모집기간이 아닙니다.");
+        }
+    }
+
+    private void validateOverAmount(BigDecimal amount) {
+        if (isOverAmount(amount)) {
+            throw new IllegalArgumentException("가능한 투자금액을 초과하였습니다.");
+        }
+    }
+
+    private boolean isOverAmount(BigDecimal amount) {
+        return this.totalInvestingAmount.compareTo(invests.getCurrentInvestingAmount().add(amount)) < 0;
+    }
+
+    private boolean isNotInvestingDate() {
+        LocalDateTime currentLocalDateTime = LocalDateTime.now();
+        return this.startedAt.isAfter(currentLocalDateTime) || this.finishedAt.isBefore(currentLocalDateTime);
+    }
+
+    public boolean isSoldOutTotalInvestingAmount() {
+        return this.invests.currentInvestingAmountEquals(this.totalInvestingAmount);
+    }
+
+    public void changeCompleteStatus() {
+        validateProductStatusAlreadyCompletion();
+        this.productStatus = ProductStatus.COMPLETION;
+    }
+
+    private void validateProductStatusAlreadyCompletion() {
+        if (isCompleted()) {
+            throw new IllegalArgumentException("이미 완료된 상태는 변경할 수 없습니다.");
         }
     }
 

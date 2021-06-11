@@ -2,14 +2,12 @@ package com.kakaopay.invest.service;
 
 import com.kakaopay.invest.domain.Invest;
 import com.kakaopay.invest.domain.Product;
+import com.kakaopay.invest.dto.InvestRequest;
 import com.kakaopay.invest.dto.InvestResponse;
-import com.kakaopay.invest.dto.ProductResponse;
 import com.kakaopay.invest.repository.InvestRepository;
-import com.kakaopay.invest.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,9 +15,11 @@ import java.util.stream.Collectors;
 @Service
 public class InvestService {
     private final InvestRepository investRepository;
+    private final ProductService productService;
 
-    public InvestService(final InvestRepository investRepository) {
+    public InvestService(final InvestRepository investRepository, final ProductService productService) {
         this.investRepository = investRepository;
+        this.productService = productService;
     }
 
     @Transactional(readOnly = true)
@@ -29,5 +29,15 @@ public class InvestService {
         return invests.stream()
                 .map(InvestResponse::of)
                 .collect(Collectors.toList());
+    }
+
+    public void invest(InvestRequest investRequest) {
+        Product product = productService.findById(investRequest.getProductId());
+        Invest invest = new Invest(investRequest.getAmount(), investRequest.getUserId(), product);
+        product.invest(invest);
+        investRepository.save(invest);
+        if (product.isSoldOutTotalInvestingAmount()) {
+            productService.changProductStatusCompletionByInvesting(product.getId());
+        }
     }
 }
