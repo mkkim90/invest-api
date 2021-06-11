@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+@RequestMapping("/api/invest")
 @RestController
 public class InvestApi {
     private final InvestService investService;
@@ -17,16 +18,18 @@ public class InvestApi {
         this.investService = investService;
     }
 
-    @PostMapping("/api/invest")
+    @PostMapping
     public ResponseEntity<InvestResponse> invest(@RequestHeader(name = "X-USER-ID") final Long userId, @RequestBody final InvestRequest investRequest) {
         investRequest.setUserId(userId);
         InvestResponse investResponse = investService.invest(investRequest);
-        return ResponseEntity.created(URI.create("/api/invest/" + investResponse.getId())).body(investResponse);
+        return ResponseEntity.created(URI.create("/api/invest/" + investResponse.getId()))
+                .body(investResponse);
     }
 
     @GetMapping("/api/invest/{id}")
     public ResponseEntity<InvestResponse> showInvest(@PathVariable Long id) {
-        return ResponseEntity.ok().body(investService.findById(id));
+        return ResponseEntity.ok()
+                .body(investService.findById(id));
     }
 
     @GetMapping("/api/invest")

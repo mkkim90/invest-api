@@ -15,15 +15,7 @@ public class ProductApi {
     public ProductApi(final ProductService productService) {
         this.productService = productService;
     }
-/*
-    @PostMapping("/api/product")
-    public ResponseEntity<OrderResponse> create(@RequestBody final OrderRequest order) {
-        final OrderResponse created = orderService.create(order);
-        final URI uri = URI.create("/api/orders/" + created.getId());
-        return ResponseEntity.created(uri)
-                .body(created);
-    }
-*/
+
     @GetMapping("/api/products")
     public ResponseEntity<List<ProductResponse>> list() {
         return ResponseEntity.ok()
