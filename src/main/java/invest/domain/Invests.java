@@ -6,11 +6,12 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Embeddable
 public class Invests {
     @BatchSize(size = 1000)
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private final List<Invest> invests = new ArrayList<>();
 
@@ -26,7 +27,9 @@ public class Invests {
     }
 
     public long getNumberInvestors() {
-        return invests.size();
+        return invests.stream()
+                .collect(Collectors.groupingBy(Invest::getUserId))
+                .size();
     }
 
     public boolean currentInvestingAmountEquals(BigDecimal totalInvestingAmount) {

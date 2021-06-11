@@ -8,6 +8,7 @@ import invest.repository.InvestRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,13 +32,21 @@ public class InvestService {
                 .collect(Collectors.toList());
     }
 
-    public void invest(InvestRequest investRequest) {
+    public InvestResponse invest(InvestRequest investRequest) {
         Product product = productService.findById(investRequest.getProductId());
-        Invest invest = new Invest(investRequest.getAmount(), investRequest.getUserId(), product);
-        product.invest(invest);
-        investRepository.save(invest);
+        Invest savedInvest = new Invest(investRequest.getAmount(), investRequest.getUserId(), product);
+        product.invest(savedInvest);
+        investRepository.save(savedInvest);
         if (product.isSoldOutTotalInvestingAmount()) {
             productService.changProductStatusCompletionByInvesting(product.getId());
         }
+        return InvestResponse.of(savedInvest);
+    }
+
+    @Transactional(readOnly = true)
+    public InvestResponse findById(Long id) {
+        Invest invest = investRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        return InvestResponse.of(invest);
     }
 }

@@ -75,7 +75,7 @@ public class Product extends BaseTimeEntity{
 
     private void validateOverAmount(BigDecimal amount) {
         if (isOverAmount(amount)) {
-            throw new IllegalArgumentException("가능한 투자금액을 초과하였습니다.");
+            throw new IllegalArgumentException("Sold-out : 가능한 투자금액을 초과하였습니다.");
         }
     }
 

@@ -5,10 +5,8 @@ import invest.domain.Invest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * 상품ID, 상품제목, 총 모집금액, 나의 투자금액, 투자일시
- */
 public class InvestResponse {
+    private Long id;
     private Long productId;
     private String productTitle;
     private BigDecimal totalInvestingAmount;
@@ -18,7 +16,8 @@ public class InvestResponse {
     public InvestResponse() {
     }
 
-    public InvestResponse(Long productId, String productTitle, BigDecimal totalInvestingAmount, BigDecimal myInvestingAmount, LocalDateTime investDate) {
+    public InvestResponse(Long id, Long productId, String productTitle, BigDecimal totalInvestingAmount, BigDecimal myInvestingAmount, LocalDateTime investDate) {
+        this.id = id;
         this.productId = productId;
         this.productTitle = productTitle;
         this.totalInvestingAmount = totalInvestingAmount;
@@ -28,12 +27,17 @@ public class InvestResponse {
 
     public static InvestResponse of(Invest invest) {
         return new InvestResponse(
+               invest.getId(),
                invest.getProductId(),
                invest.getProductTitle(),
                invest.getTotalInvestingAmount(),
                invest.getAmount(),
                invest.getCreatedDate()
         );
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getProductId() {
