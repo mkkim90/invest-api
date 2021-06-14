@@ -24,16 +24,31 @@ public class ProductRepositoryTest {
     void create() {
         LocalDateTime startAt = LocalDateTime.now();
         LocalDateTime finishAt = startAt.plusMonths(1);
-        Product expected = new Product("투자상품", BigDecimal.valueOf(1000), startAt, finishAt);
+        Product expected = buildProduct(startAt, finishAt);
         Product product = productRepository.save(expected);
         assertThat(expected == product).isTrue();
     }
+
+    private Product buildProduct(LocalDateTime startAt, LocalDateTime finishAt) {
+        return Product.builder()
+                .title("투자상품")
+                .totalInvestingAmount(BigDecimal.valueOf(1_000))
+                .startedAt(startAt)
+                .finishedAt(finishAt)
+                .build();
+    }
+
 
     @DisplayName("상품 등록 예외 - 가격이 0미만")
     @Test
     void validLessThanZero() {
         Assertions.assertThatThrownBy(() -> {
-            new Product("투자상품", BigDecimal.valueOf(-1), LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
+            Product.builder()
+                    .title("투자상품")
+                    .totalInvestingAmount(BigDecimal.valueOf(-1))
+                    .startedAt(LocalDateTime.now())
+                    .finishedAt(LocalDateTime.now().plusMonths(1))
+                    .build();
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -41,7 +56,12 @@ public class ProductRepositoryTest {
     @Test
     void validateStartedAtAndFinishedAt() {
         Assertions.assertThatThrownBy(() -> {
-            new Product("투자상품", BigDecimal.valueOf(100), LocalDateTime.now().plusMonths(1), LocalDateTime.now());
+            Product.builder()
+                    .title("투자상품")
+                    .totalInvestingAmount(BigDecimal.valueOf(100))
+                    .startedAt(LocalDateTime.now().plusMonths(1))
+                    .finishedAt(LocalDateTime.now())
+                    .build();
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -50,10 +70,9 @@ public class ProductRepositoryTest {
     void findAllStartedAtAndFinishedAt() {
         LocalDateTime startAt = LocalDateTime.now();
         LocalDateTime finishAt = startAt.plusMonths(1);
-        productRepository.saveAll(Arrays.asList(new Product("투자상품", BigDecimal.valueOf(1000), startAt, finishAt),new Product("투자상품", BigDecimal.valueOf(1000), startAt, finishAt)));
+        productRepository.saveAll(Arrays.asList(buildProduct(startAt, finishAt),buildProduct(startAt, finishAt)));
 
         List<Product> result = productRepository.findAllByStartedAtBeforeAndFinishedAtAfter(LocalDateTime.now(), LocalDateTime.now());
-
         assertThat(result.size()).isEqualTo(2);
     }
 }

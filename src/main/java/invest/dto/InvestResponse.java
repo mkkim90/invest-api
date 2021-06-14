@@ -1,10 +1,14 @@
 package invest.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import invest.domain.Invest;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Getter
 public class InvestResponse {
     private Long id;
     private Long productId;
@@ -16,7 +20,8 @@ public class InvestResponse {
     public InvestResponse() {
     }
 
-    public InvestResponse(Long id, Long productId, String productTitle, BigDecimal totalInvestingAmount, BigDecimal myInvestingAmount, LocalDateTime investDate) {
+    @Builder
+    private InvestResponse(Long id, Long productId, String productTitle, BigDecimal totalInvestingAmount, BigDecimal myInvestingAmount, LocalDateTime investDate) {
         this.id = id;
         this.productId = productId;
         this.productTitle = productTitle;
@@ -26,37 +31,14 @@ public class InvestResponse {
     }
 
     public static InvestResponse of(Invest invest) {
-        return new InvestResponse(
-               invest.getId(),
-               invest.getProductId(),
-               invest.getProductTitle(),
-               invest.getTotalInvestingAmount(),
-               invest.getAmount(),
-               invest.getCreatedDate()
-        );
-    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public String getProductTitle() {
-        return productTitle;
-    }
-
-    public BigDecimal getTotalInvestingAmount() {
-        return totalInvestingAmount;
-    }
-
-    public BigDecimal getMyInvestingAmount() {
-        return myInvestingAmount;
-    }
-
-    public LocalDateTime getInvestDate() {
-        return investDate;
+        return InvestResponse.builder()
+                .id(invest.getId())
+                .productId(invest.getProductId())
+                .productTitle(invest.getProductTitle())
+                .totalInvestingAmount(invest.getTotalInvestingAmount())
+                .myInvestingAmount(invest.getAmount())
+                .investDate(invest.getCreatedDate())
+                .build();
     }
 }

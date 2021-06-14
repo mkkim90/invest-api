@@ -1,10 +1,13 @@
 package invest.dto;
 
 import invest.domain.Product;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Getter
 public class ProductResponse {
     private Long id;
     private String title;
@@ -18,7 +21,8 @@ public class ProductResponse {
     public ProductResponse() {
     }
 
-    public ProductResponse(Long id, String title, BigDecimal totalInvestingAmount, BigDecimal currentInvestingAmount, long numberInvestors, String productStatus, LocalDateTime startedAt, LocalDateTime finishedAt) {
+    @Builder
+    private ProductResponse(Long id, String title, BigDecimal totalInvestingAmount, BigDecimal currentInvestingAmount, long numberInvestors, String productStatus, LocalDateTime startedAt, LocalDateTime finishedAt) {
         this.id = id;
         this.title = title;
         this.totalInvestingAmount = totalInvestingAmount;
@@ -30,47 +34,15 @@ public class ProductResponse {
     }
 
     public static ProductResponse of(Product product) {
-        return new ProductResponse(
-                product.getId(),
-                product.getTitle(),
-                product.getTotalInvestingAmount(),
-                product.getCurrentInvestingAmount(),
-                product.getNumberInvestors(),
-                product.getProductStatus().name(),
-                product.getStartedAt(),
-                product.getFinishedAt()
-        );
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public BigDecimal getTotalInvestingAmount() {
-        return totalInvestingAmount;
-    }
-
-    public BigDecimal getCurrentInvestingAmount() {
-        return currentInvestingAmount;
-    }
-
-    public long getNumberInvestors() {
-        return numberInvestors;
-    }
-
-    public String getProductStatus() {
-        return productStatus;
-    }
-
-    public LocalDateTime getStartedAt() {
-        return startedAt;
-    }
-
-    public LocalDateTime getFinishedAt() {
-        return finishedAt;
+        return ProductResponse.builder()
+                .id(product.getId())
+                .title(product.getTitle())
+                .totalInvestingAmount(product.getTotalInvestingAmount())
+                .currentInvestingAmount(product.getCurrentInvestingAmount())
+                .numberInvestors(product.getNumberInvestors())
+                .productStatus(product.getProductStatus().name())
+                .startedAt(product.getStartedAt())
+                .finishedAt(product.getFinishedAt())
+                .build();
     }
 }

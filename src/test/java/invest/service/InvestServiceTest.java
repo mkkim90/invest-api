@@ -1,6 +1,7 @@
 package invest.service;
 
 import invest.domain.Product;
+import invest.domain.ProductStatus;
 import invest.dto.InvestRequest;
 import invest.repository.ProductRepository;
 import org.assertj.core.api.Assertions;
@@ -25,13 +26,23 @@ public class InvestServiceTest {
     private InvestService investService;
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
     private ProductRepository productRepository;
 
     @BeforeEach
     void setUp() {
-        Product product = new Product("개인상품 포트폴리오", BigDecimal.valueOf(100_000), LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
+        Product product = Product.builder()
+                .title("개인상품 포트폴리오")
+                .totalInvestingAmount(BigDecimal.valueOf(100_000))
+                .startedAt(LocalDateTime.now())
+                .finishedAt(LocalDateTime.now().plusMonths(1))
+                .build();
+
         개인상품_포트폴리오 = productRepository.save(product);
     }
+
 
     @DisplayName("투자하기")
     @Test
@@ -57,12 +68,21 @@ public class InvestServiceTest {
     @DisplayName("투자하기 예외 - 모집기간이 아닌 상품 투자할 경우")
     @Test
     void validateInvestingDate() {
-        Product 모집예정인_포트폴리오  = productRepository.save(new Product("개인상품 포트폴리오", BigDecimal.valueOf(100_000), LocalDateTime.now().plusDays(10), LocalDateTime.now().plusMonths(1)));
-        Product 모집이지난_포트폴리오 = productRepository.save(new Product("개인상품 포트폴리오", BigDecimal.valueOf(100_000), LocalDateTime.now().minusMonths(1), LocalDateTime.now().minusDays(1)));
+        Product 모집예정인_포트폴리오 = productRepository.save(buildProduct(LocalDateTime.now().plusDays(10), LocalDateTime.now().plusMonths(1)));
+        Product 모집이지난_포트폴리오 = productRepository.save(buildProduct(LocalDateTime.now().minusMonths(1), LocalDateTime.now().minusDays(1)));
         InvestRequest 모집예정인_포트폴리오_투자_요청 = new InvestRequest(모집예정인_포트폴리오.getId(), BigDecimal.valueOf(1_000), 1234L);
         InvestRequest 모집이지난_포트폴리오_투자_요청 = new InvestRequest(모집이지난_포트폴리오.getId(), BigDecimal.valueOf(1_000), 1234L);
         throwException(모집예정인_포트폴리오_투자_요청);
         throwException(모집이지난_포트폴리오_투자_요청);
+    }
+
+    private Product buildProduct(LocalDateTime startedAt, LocalDateTime finishedAt) {
+        return Product.builder()
+                .title("개인상품_포트폴리오")
+                .totalInvestingAmount(BigDecimal.valueOf(100_000))
+                .startedAt(startedAt)
+                .finishedAt(finishedAt)
+                .build();
     }
 
     @DisplayName("투자하기 예외 - 가능한 투자 금액을 초할 경우")
@@ -80,8 +100,7 @@ public class InvestServiceTest {
 
         InvestRequest investRequest = new InvestRequest(product.getId(), amount, 1234L);
         investService.invest(investRequest);
-
-        Product actual = productRepository.findById(product.getId()).get();
-        assertThat(actual.isCompleted()).isTrue();
+        Product actual = productRepository.findByProductStatus(ProductStatus.COMPLETION);
+        assertThat(actual.getId()).isEqualTo(product.getId());
     }
 }

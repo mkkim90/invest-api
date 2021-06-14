@@ -1,7 +1,11 @@
 package invest.dto;
 
+import lombok.Data;
+import lombok.Getter;
+
 import java.math.BigDecimal;
 
+@Getter
 public class InvestRequest {
     private Long productId;
     private BigDecimal amount;
@@ -16,24 +20,7 @@ public class InvestRequest {
         this.userId = userId;
     }
 
-    public InvestRequest(Long productId, BigDecimal amount) {
-        this.productId = productId;
-        this.amount = amount;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public Long getUserId() {
-        return this.userId;
     }
 }

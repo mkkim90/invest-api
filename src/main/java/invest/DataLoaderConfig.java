@@ -25,8 +25,20 @@ public class DataLoaderConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Product 개인신용포트폴리오 = new Product("개인신용 포트폴리오", BigDecimal.valueOf(1000000), LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
-        Product 부동산포트폴리오 = new Product("부동산 포트폴리오", BigDecimal.valueOf(50000000), LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
+        Product 개인신용포트폴리오 = Product.builder()
+                .title("개인신용 포트폴리오")
+                .totalInvestingAmount(BigDecimal.valueOf(1_000_000))
+                .startedAt(LocalDateTime.now())
+                .finishedAt(LocalDateTime.now().plusMonths(1))
+                .build();
+
+
+        Product 부동산포트폴리오 = Product.builder()
+                .title("부동산 포트폴리오")
+                .totalInvestingAmount(BigDecimal.valueOf(50_000_000))
+                .startedAt(LocalDateTime.now())
+                .finishedAt(LocalDateTime.now().plusMonths(1))
+                .build();
         productRepository.saveAll(Arrays.asList(개인신용포트폴리오, 부동산포트폴리오));
         Invest 개인신용포트폴리오투자 = new Invest(BigDecimal.valueOf(1000), 1234L, 개인신용포트폴리오);
         Invest 부동산포트폴리오투자 = new Invest(BigDecimal.valueOf(4000), 1234L, 부동산포트폴리오);

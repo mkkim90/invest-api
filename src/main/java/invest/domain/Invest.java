@@ -1,10 +1,12 @@
 package invest.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Entity
+@Getter
 public class Invest extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,26 +15,27 @@ public class Invest extends BaseTimeEntity{
     @Column(nullable = false)
     private BigDecimal amount;
 
-    @Column(name="user_id")
+    @Column(name="user_id", nullable = false)
     private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     protected Invest() {
     }
 
     public Invest(BigDecimal amount, Long userId, Product product) {
+        validateRequred(amount, userId, product);
         this.amount = amount;
         this.userId = userId;
         this.product = product;
     }
 
-    public Long getId() { return id;}
-
-    public BigDecimal getAmount() {
-        return amount;
+    private void validateRequred(BigDecimal amount, Long userId, Product product) {
+        if (amount == null || userId == null || product == null) {
+            throw new IllegalArgumentException("투자 필수값 누락입니다.");
+        }
     }
 
     public Long getProductId() {
@@ -45,22 +48,5 @@ public class Invest extends BaseTimeEntity{
 
     public BigDecimal getTotalInvestingAmount() {
         return product.getTotalInvestingAmount();
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Invest invest = (Invest) o;
-        return Objects.equals(id, invest.id) && Objects.equals(amount, invest.amount) && Objects.equals(userId, invest.userId) && Objects.equals(product, invest.product);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, amount, userId, product);
     }
 }

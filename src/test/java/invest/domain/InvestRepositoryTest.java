@@ -23,10 +23,19 @@ public class InvestRepositoryTest {
     @DisplayName("등록")
     @Test
     void create() {
-        Product product = productRepository.save(new Product("투자상품", BigDecimal.valueOf(1000), LocalDateTime.now(), LocalDateTime.now().plusMonths(1)));
+        Product product = productRepository.save(buildProduct());
         Invest expected = new Invest(BigDecimal.valueOf(3000), 12345L, product);
         Invest invest = investRepository.save(expected);
         assertThat(expected == invest).isTrue();
+    }
+
+    private Product buildProduct() {
+        return Product.builder()
+                .title("투자상품")
+                .totalInvestingAmount(BigDecimal.valueOf(1_000))
+                .startedAt(LocalDateTime.now())
+                .finishedAt(LocalDateTime.now().plusMonths(1))
+                .build();
     }
 
 }

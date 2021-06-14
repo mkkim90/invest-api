@@ -1,10 +1,20 @@
 package invest.domain;
 
+
+
+
+
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@EqualsAndHashCode
 public class Product extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +39,8 @@ public class Product extends BaseTimeEntity{
     protected Product() {
     }
 
-    public Product(String title, BigDecimal totalInvestingAmount, LocalDateTime startedAt, LocalDateTime finishedAt) {
+    @Builder
+    private Product(String title, BigDecimal totalInvestingAmount, LocalDateTime startedAt, LocalDateTime finishedAt) {
         validateLessThanZero(totalInvestingAmount);
         validateStartedAtAndFinishedAt(startedAt, finishedAt);
         this.title = title;
@@ -103,35 +114,11 @@ public class Product extends BaseTimeEntity{
         }
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public BigDecimal getTotalInvestingAmount() {
-        return totalInvestingAmount;
-    }
-
-    public LocalDateTime getStartedAt() {
-        return startedAt;
-    }
-
-    public LocalDateTime getFinishedAt() {
-        return finishedAt;
-    }
-
     public long getNumberInvestors() {
         return invests.getNumberInvestors();
     }
 
     public BigDecimal getCurrentInvestingAmount() {
         return invests.getCurrentInvestingAmount();
-    }
-
-    public ProductStatus getProductStatus() {
-        return productStatus;
     }
 }
