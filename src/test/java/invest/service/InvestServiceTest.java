@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -95,7 +96,7 @@ public class InvestServiceTest {
     @DisplayName("투자하기 - 투자 가능한 금액과 현재 투자한 총 금액이 일치하면 모집 완료")
     @Test
     void investAfterChangeComplete() {
-        Product product = productRepository.findAll().get(0);
+        Product product = productRepository.findById(1l).orElseThrow(EntityNotFoundException::new);
         BigDecimal amount = product.getTotalInvestingAmount().subtract(product.getCurrentInvestingAmount());
 
         InvestRequest investRequest = new InvestRequest(product.getId(), amount, 1234L);
